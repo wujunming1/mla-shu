@@ -5,7 +5,7 @@ import xlrd
 
 def load_data(input_file):
     source_data = pd.read_excel(input_file)
-    np_data = source_data.as_matrix()
+    np_data = source_data.source_data.iloc[:,:].values
     # print(source_data.columns)
     return source_data, np_data
 
@@ -39,7 +39,7 @@ def train_cluster(train_data, array_data, source_data):
 
     # print(labels)
     combine = np.concatenate((array_data, label), axis=1)
-    writer = pd.ExcelWriter('brg\\cluster_data2.xls')
+    writer = pd.ExcelWriter('cluster_data2.xls')
     r0 = pd.concat([pd.DataFrame(array_data[:, 0:2]), pd.DataFrame(model.labels_)], axis=1)
     # r0.columns = ['temp', 'stress','stacking','DL','G','L','Ni3Al', 'label']
     r0.columns = ['temp', 'stress', 'label']
@@ -99,7 +99,7 @@ def plot_cluster(data_zs, r):
 
 def run_cluster():
     print("run_cluster")
-    resource_data, np_data = load_data('all_data_descriptor_557num_train4(1).xlsx')
+    resource_data, np_data = load_data('多尺度样本_revision.xlsx')
     array_data = data_process(np_data)
     train_data = cluster_split(array_data)
     # print(array_data, np_data)
